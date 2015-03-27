@@ -1,0 +1,270 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Chapter 02: Describing Data and Distribution</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-27"><meta name="DC.source" content="ch02.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Chapter 02: Describing Data and Distribution</h1><!--introduction--><p>Selected solutions for Chapter 02 Describing Data and Distribution</p><div><ul><li>Central Tendency:</li><li>Variability / Dispersion   * variance   * standard deviation</li></ul></div><pre>* Reference: Statistics Unplugged 3rd Edition
+* Zihan Chen
+* 2015-03-26</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Central Tendency: Mean</a></li><li><a href="#2">Central Tendency: Median</a></li><li><a href="#3">Central Tendency: Mode</a></li><li><a href="#4">Variability: Range</a></li><li><a href="#5">Variability: Variance</a></li><li><a href="#6">Variability: Standard Deviation</a></li></ul></div><h2>Central Tendency: Mean<a name="1"></a></h2><pre class="codeinput">clc; clear;
+
+<span class="comment">% Table 2-1 P21</span>
+
+<span class="comment">% data</span>
+d = [5 1 3 4 1 4 3 5 2 2];
+
+<span class="comment">% matlab</span>
+m = mean(d);
+
+<span class="comment">% manual</span>
+mm = sum(d)/length(d);
+
+<span class="comment">% print answer</span>
+disp([<span class="string">'Mean = '</span>, num2str(m), <span class="string">'  (MATLAB)'</span>]);
+disp([<span class="string">'Mean = '</span>, num2str(mm), <span class="string">'  (Manual)'</span>]);
+</pre><pre class="codeoutput">Mean = 3  (MATLAB)
+Mean = 3  (Manual)
+</pre><h2>Central Tendency: Median<a name="2"></a></h2><pre class="codeinput"><span class="comment">% matlab</span>
+med = median(d);
+
+<span class="comment">% manual</span>
+ds = sort(d);    <span class="comment">% data sorted</span>
+mi = (length(d) + 1)/2;   <span class="comment">% median index</span>
+<span class="keyword">if</span> (mod(mi,1) == 0)
+  <span class="comment">% odd number of samples</span>
+  medm = ds(mi);
+<span class="keyword">else</span>
+  <span class="comment">% even number of samples</span>
+  medm = (ds(floor(mi)) + ds(ceil(mi)))/2.0;
+<span class="keyword">end</span>
+
+<span class="comment">% print answer</span>
+disp([<span class="string">'Median number = '</span>, num2str(med), <span class="string">'  (MATLAB)'</span>]);
+disp([<span class="string">'Median number = '</span>, num2str(medm), <span class="string">'  (Manual)'</span>]);
+</pre><pre class="codeoutput">Median number = 3  (MATLAB)
+Median number = 3  (Manual)
+</pre><h2>Central Tendency: Mode<a name="3"></a></h2><pre class="codeinput">d = [1 2 2 7 7 7 9 9 9 25 29];
+md = mode(d);  <span class="comment">% mode</span>
+
+disp([<span class="string">'Mode = '</span>, num2str(md), <span class="string">'  (MATLAB)'</span>]);
+</pre><pre class="codeoutput">Mode = 7  (MATLAB)
+</pre><h2>Variability: Range<a name="4"></a></h2><pre class="codeinput">clc; clear;
+
+d = [1 2 3 4 5];
+
+<span class="comment">%  basically min and max of data</span>
+dmin = min(d);
+dmax = max(d);
+
+disp([<span class="string">'Range = ['</span>, num2str(dmin), <span class="string">' '</span>, num2str(dmax), <span class="string">']'</span>]);
+</pre><pre class="codeoutput">Range = [1 5]
+</pre><h2>Variability: Variance<a name="5"></a></h2><pre class="codeinput"><span class="comment">% matlab</span>
+<span class="comment">% population, use N</span>
+dvar_population = var(d, 1);  <span class="comment">% 1 means use N</span>
+<span class="comment">% sample, use n-1</span>
+dvar = var(d);   <span class="comment">% use n-1 by default</span>
+
+<span class="comment">% manual in a matrix format</span>
+dm = mean(d);
+dn = length(d);
+dvarm = sum((d - dm).^2) / (dn-1);
+
+<span class="comment">% print answer</span>
+disp([<span class="string">'Variance = '</span>, num2str(dvar), <span class="string">'  (MATLAB)'</span>]);
+disp([<span class="string">'Variance = '</span>, num2str(dvarm), <span class="string">'  (Manual)'</span>]);
+</pre><pre class="codeoutput">Variance = 2.5  (MATLAB)
+Variance = 2.5  (Manual)
+</pre><h2>Variability: Standard Deviation<a name="6"></a></h2><pre class="codeinput"><span class="comment">% ---- standard deviation ----</span>
+<span class="comment">% note sample std, thus use n-1</span>
+
+<span class="comment">% matlab</span>
+dstd = std(d);
+
+<span class="comment">% manual</span>
+<span class="comment">% std = sqrt(var)</span>
+dstdm = sqrt(dvarm);
+
+<span class="comment">% print answer</span>
+disp([<span class="string">'Standard Deviation = '</span>, num2str(dstd), <span class="string">'  (MATLAB)'</span>]);
+disp([<span class="string">'Standard Deviation = '</span>, num2str(dstdm), <span class="string">'  (Manual)'</span>]);
+</pre><pre class="codeoutput">Standard Deviation = 1.5811  (MATLAB)
+Standard Deviation = 1.5811  (Manual)
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Chapter 02: Describing Data and Distribution
+% Selected solutions for Chapter 02 Describing Data and Distribution
+%
+% * Central Tendency: 
+% * Variability / Dispersion
+%   * variance 
+%   * standard deviation
+%
+%  * Reference: Statistics Unplugged 3rd Edition
+%  * Zihan Chen
+%  * 2015-03-26 
+
+
+%% Central Tendency: Mean 
+
+clc; clear;
+
+% Table 2-1 P21
+
+% data
+d = [5 1 3 4 1 4 3 5 2 2];
+
+% matlab 
+m = mean(d);
+
+% manual 
+mm = sum(d)/length(d);
+
+% print answer
+disp(['Mean = ', num2str(m), '  (MATLAB)']);
+disp(['Mean = ', num2str(mm), '  (Manual)']);
+
+
+%% Central Tendency: Median
+
+% matlab 
+med = median(d);
+
+% manual 
+ds = sort(d);    % data sorted
+mi = (length(d) + 1)/2;   % median index
+if (mod(mi,1) == 0)
+  % odd number of samples
+  medm = ds(mi);
+else 
+  % even number of samples
+  medm = (ds(floor(mi)) + ds(ceil(mi)))/2.0;
+end
+
+% print answer
+disp(['Median number = ', num2str(med), '  (MATLAB)']);
+disp(['Median number = ', num2str(medm), '  (Manual)']);
+
+%% Central Tendency: Mode
+d = [1 2 2 7 7 7 9 9 9 25 29];
+md = mode(d);  % mode 
+
+disp(['Mode = ', num2str(md), '  (MATLAB)']);
+
+
+%% Variability: Range
+clc; clear;
+
+d = [1 2 3 4 5];
+
+%  basically min and max of data 
+dmin = min(d);
+dmax = max(d);
+
+disp(['Range = [', num2str(dmin), ' ', num2str(dmax), ']']);
+
+%% Variability: Variance
+
+% matlab 
+% population, use N 
+dvar_population = var(d, 1);  % 1 means use N 
+% sample, use n-1
+dvar = var(d);   % use n-1 by default
+
+% manual in a matrix format
+dm = mean(d);
+dn = length(d);
+dvarm = sum((d - dm).^2) / (dn-1);
+
+% print answer
+disp(['Variance = ', num2str(dvar), '  (MATLAB)']);
+disp(['Variance = ', num2str(dvarm), '  (Manual)']);
+
+
+%% Variability: Standard Deviation
+
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH standard deviation REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+% note sample std, thus use n-1 
+
+% matlab
+dstd = std(d);
+
+% manual 
+% std = sqrt(var)
+dstdm = sqrt(dvarm);
+
+% print answer
+disp(['Standard Deviation = ', num2str(dstd), '  (MATLAB)']);
+disp(['Standard Deviation = ', num2str(dstdm), '  (Manual)']);
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
