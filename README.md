@@ -8,7 +8,7 @@ manually compute these values.
 
 ### List of Files
 * ch02.m: Central Tendency (mean,median,mode) and Variability(var,std)
-* ch03.m: The shape of distribution
+* ch03.m: The shape of distribution, plot 1-2-3 rule
 * ch10.m: Chi-Square
 
 
