@@ -1,20 +1,20 @@
-% Zihan Chen
-% 2015-03-26 
-% Statistics Unplugged 3rd Edition
-% Chapter 03
+%% Chapter 03: The Shape of Distributions
+% Selected solutions for Chapter 03 The Shape of Distributions
+% 
+% The Shape of Distributions (1-2-3 Rules)
+% 
+%  * Plot 1 rule  
+%  * Plot 2 rule 
+%  * Plot 3 rule 
+%
+%  * Reference: Statistics Unplugged 3rd Edition
+%  * Zihan Chen
+%  * 2015-03-26 
 
-% The Shape of Distributions
-% 1-2-3 Rules
-% This program plots 1 rule first  
-% press any key 
-% Plot 2 rule 
-% press any key 
-% Plot 3 rule 
-
-
-clc; clear;
 
 %% 1 Rule 
+
+clc; clear;
 
 % Plot -1 to 1 as white, other grey 
 x = -4:0.1:4;
@@ -37,7 +37,7 @@ careastr = sprintf('area 1 = %0.3f', carea);
 disp(careastr);
 
 %% 2 Rule 
-pause;
+% pause;
 hold on;
 x2 = -2:0.1:2;
 y2 = normpdf(x2);
@@ -51,7 +51,7 @@ careastr = sprintf('area 2 = %0.3f', carea);
 disp(careastr);
 
 %% 3 Rule 
-pause;
+% pause;
 hold on;
 x3 = -3:0.1:3;
 y3 = normpdf(x3);

@@ -1,15 +1,14 @@
-% Zihan Chen
-% 2015-03-26 
-% Statistics Unplugged 3rd Edition
-% Chapter 05
+%% Chapter 05: Four Fundamental Concepts 
+% Selected solutions for Chapter 05 Four Fundamental Concepts 
+% 
+%  * Reference: Statistics Unplugged 3rd Edition
+%  * Zihan Chen
+%  * 2015-03-26 
 
-% Four Fundamental Concepts 
-% Just show a couple Application Problem Solutions
 
-% Sample Error 
-% Standard Error of the Mean
+%% Standard Error of the Mean Q1
+% Question 1
 
-%% A1 
 clc; clear;
 
 mu = 24.12;
@@ -25,7 +24,9 @@ mstd = sigma / sqrt(n);
 % print answer
 disp(['mean = ', num2str(m), '  std err = ', num2str(mstd)]);
 
-%% A3 
+%% Standard Error of the Mean Q3
+% Question 3
+
 clear;
 
 mu = 120; 
@@ -34,7 +35,7 @@ n = 100;
 
 % a 
 m = mu;
-%b 
+% b 
 mstd = sigma/sqrt(n);
 
 % print answer

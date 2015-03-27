@@ -1,22 +1,20 @@
-% Zihan Chen
-% 2015-03-26 
-% Statistics Unplugged 3rd Edition
-% Chapter 02 
-
-% Central Tendency: 
-%   - mean 
-%   - median 
-%   - mode 
-
-% Variability / Dispersion
-%   - variance 
-%   - standard deviation
+%% Chapter 02: Describing Data and Distribution
+% Selected solutions for Chapter 02 Describing Data and Distribution
+%
+% * Central Tendency: 
+% * Variability / Dispersion
+%   * variance 
+%   * standard deviation
+%
+%  * Reference: Statistics Unplugged 3rd Edition
+%  * Zihan Chen
+%  * 2015-03-26 
 
 
-%% Central Tendency 
+%% Central Tendency: Mean 
+
 clc; clear;
 
-% ---- Mean -----
 % Table 2-1 P21
 
 % data
@@ -28,13 +26,15 @@ m = mean(d);
 % manual 
 mm = sum(d)/length(d);
 
+% print answer
+disp(['Mean = ', num2str(m), '  (MATLAB)']);
+disp(['Mean = ', num2str(mm), '  (Manual)']);
 
-% ---- Median -----
+
+%% Central Tendency: Median
 
 % matlab 
 med = median(d);
-disp('Median number = ');
-disp(med);
 
 % manual 
 ds = sort(d);    % data sorted
@@ -47,24 +47,30 @@ else
   medm = (ds(floor(mi)) + ds(ceil(mi)))/2.0;
 end
 
+% print answer
+disp(['Median number = ', num2str(med), '  (MATLAB)']);
+disp(['Median number = ', num2str(medm), '  (Manual)']);
 
-% ---- Mode ------
+%% Central Tendency: Mode
 d = [1 2 2 7 7 7 9 9 9 25 29];
 md = mode(d);  % mode 
 
+disp(['Mode = ', num2str(md), '  (MATLAB)']);
 
-%% Variability / Dispersion
+
+%% Variability: Range
 clc; clear;
 
 d = [1 2 3 4 5];
 
-% ---- Range ----
 %  basically min and max of data 
 dmin = min(d);
 dmax = max(d);
 
+disp(['Range = [', num2str(dmin), ' ', num2str(dmax), ']']);
 
-% ---- variance ----
+%% Variability: Variance
+
 % matlab 
 % population, use N 
 dvar_population = var(d, 1);  % 1 means use N 
@@ -76,7 +82,12 @@ dm = mean(d);
 dn = length(d);
 dvarm = sum((d - dm).^2) / (dn-1);
 
+% print answer
+disp(['Variance = ', num2str(dvar), '  (MATLAB)']);
+disp(['Variance = ', num2str(dvarm), '  (Manual)']);
 
+
+%% Variability: Standard Deviation
 
 % ---- standard deviation ----
 % note sample std, thus use n-1 
@@ -87,6 +98,10 @@ dstd = std(d);
 % manual 
 % std = sqrt(var)
 dstdm = sqrt(dvarm);
+
+% print answer
+disp(['Standard Deviation = ', num2str(dstd), '  (MATLAB)']);
+disp(['Standard Deviation = ', num2str(dstdm), '  (Manual)']);
 
 
 
