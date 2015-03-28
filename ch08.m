@@ -1,4 +1,4 @@
-%% Chapter 07: Hypothesis Testing with Two Sample
+%% Chapter 08: Hypothesis Testing with Two Samples
 % 
 %  * Reference: Statistics Unplugged 3rd Edition
 %  * Zihan Chen
