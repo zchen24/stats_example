@@ -1,0 +1,310 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Chapter 08: Hypothesis Testing with Two Samples</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-27"><meta name="DC.source" content="ch08.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Chapter 08: Hypothesis Testing with Two Samples</h1><!--introduction--><pre>* Reference: Statistics Unplugged 3rd Edition
+* Zihan Chen
+* 2015-03-27</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Related Samples MATLAB</a></li><li><a href="#2">Related Samples MANUAL</a></li><li><a href="#3">Independent Samples MATLAB</a></li><li><a href="#4">Independent Samples MANUAL</a></li></ul></div><h2>Related Samples MATLAB<a name="1"></a></h2><p>Data: Table 8-2 P181</p><pre class="codeinput">clc; clear; close <span class="string">all</span>;
+
+<span class="comment">% d1: test 1 data</span>
+<span class="comment">% d2: test 2 data</span>
+<span class="comment">% dd: difference</span>
+d1 = [50 77 67 94 64 77 85 52 81 91 52 61 83 66 71];
+d2 = [55 79 82 90 64 83 80 55 79 91 61 77 83 70 75];
+
+<span class="comment">% matlab function</span>
+[h, p, ci, stats] = ttest(d1, d2);
+
+<span class="comment">% print answer</span>
+disp(<span class="string">'MATLAB:'</span>);
+disp([<span class="string">'   h = '</span>, num2str(h)]);
+disp([<span class="string">'   t = '</span>, num2str(stats.tstat)]);
+disp([<span class="string">'  df = '</span>, num2str(stats.df)]);
+disp([<span class="string">'  sd = '</span>, num2str(stats.sd)]);
+</pre><pre class="codeoutput">MATLAB:
+   h = 1
+   t = -2.2331
+  df = 14
+  sd = 6.128
+</pre><h2>Related Samples MANUAL<a name="2"></a></h2><p>Data: Table 8-2 P181 (Same as above)</p><pre class="codeinput"><span class="comment">% manual</span>
+dd = d2 - d1;
+ddm = mean(dd);   <span class="comment">% mean</span>
+ddn = length(dd); <span class="comment">% num of samples</span>
+dddof = ddn - 1;  <span class="comment">% deg of freedom</span>
+
+<span class="comment">% variance &amp; std</span>
+ddvar = sum((dd - ddm).^2)/(ddn-1);
+ddstd = sqrt(ddvar);
+
+<span class="comment">% standard error of mean</span>
+ddstdm = sqrt(ddvar)/sqrt(ddn);
+
+<span class="comment">% t value (tstat)</span>
+ddt = ddm/ddstdm;
+
+<span class="comment">% critical value</span>
+sl = 0.05; <span class="comment">% significance level</span>
+ddcv = tinv(1-sl/2, dddof);
+
+<span class="comment">% test</span>
+ddh = (abs(ddt) &gt; ddcv);
+
+disp(<span class="string">'MANUAL:'</span>);
+disp([<span class="string">'   h = '</span>, num2str(ddh)]);
+disp([<span class="string">'   t = '</span>, num2str(ddt)]);
+disp([<span class="string">'  df = '</span>, num2str(dddof)]);
+disp([<span class="string">'  sd = '</span>, num2str(ddstd)]);
+</pre><pre class="codeoutput">MANUAL:
+   h = 1
+   t = 2.2331
+  df = 14
+  sd = 6.128
+</pre><h2>Independent Samples MATLAB<a name="3"></a></h2><p>Table 8-3 P190</p><pre class="codeinput">clc; clear;
+
+<span class="comment">% data</span>
+<span class="comment">% d1: fraternity</span>
+<span class="comment">% d2: nonfraternity</span>
+d1 = [6 3 2 4 5 6 7 5 4 5 4 8 6 7];
+d2 = [0 5 3 4 3 6 3 6 5 4 4 2];
+
+[h, p, ci, stats] = ttest2(d1, d2);
+
+<span class="comment">% print answer</span>
+disp(<span class="string">'MATLAB:'</span>);
+disp([<span class="string">'   h = '</span>, num2str(h)]);
+disp([<span class="string">'   t = '</span>, num2str(stats.tstat)]);
+disp([<span class="string">'  df = '</span>, num2str(stats.df)]);
+disp([<span class="string">'  sd = '</span>, num2str(stats.sd)]);
+</pre><pre class="codeoutput">MATLAB:
+   h = 1
+   t = 2.104
+  df = 24
+  sd = 1.6828
+</pre><h2>Independent Samples MANUAL<a name="4"></a></h2><p>Table 8-3 P190 (Same as above)</p><pre class="codeinput">d1m = mean(d1);    <span class="comment">% d1 mean</span>
+d1n = length(d1);  <span class="comment">% d1 num of samples</span>
+d1var = var(d1);   <span class="comment">% d1 variance</span>
+d1dof = d1n - 1;   <span class="comment">% d1 dof</span>
+
+d2m = mean(d2);    <span class="comment">% d2 mean</span>
+d2n = length(d2);  <span class="comment">% d2 num of samples</span>
+d2var = var(d2);   <span class="comment">% d2 variance</span>
+d2dof = d2n - 1;   <span class="comment">% d2 dof</span>
+
+dof = d1n + d2n - 2;  <span class="comment">% totoal dof</span>
+
+<span class="comment">% standard error of mean</span>
+dstd = sqrt((d1var*d1dof+d2var*d2dof)/dof);
+dstdm = dstd * sqrt(1/d1n+1/d2n);
+
+<span class="comment">% t value</span>
+dt = (d1m - d2m) / dstdm;
+
+<span class="comment">% critial value</span>
+sl = 0.05;
+dcv = tinv(1-sl/2, dof);
+
+<span class="comment">% test</span>
+dh = (abs(dt) &gt; dcv);
+
+<span class="comment">% print answer</span>
+disp(<span class="string">'MANUAL:'</span>);
+disp([<span class="string">'   h = '</span>, num2str(dh)]);
+disp([<span class="string">'   t = '</span>, num2str(dt)]);
+disp([<span class="string">'  df = '</span>, num2str(dof)]);
+disp([<span class="string">'  sd = '</span>, num2str(dstd)]);
+</pre><pre class="codeoutput">MANUAL:
+   h = 1
+   t = 2.104
+  df = 24
+  sd = 1.6828
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Chapter 08: Hypothesis Testing with Two Samples
+% 
+%  * Reference: Statistics Unplugged 3rd Edition
+%  * Zihan Chen
+%  * 2015-03-27
+
+
+%% Related Samples MATLAB
+% Data: Table 8-2 P181
+
+clc; clear; close all;
+
+% d1: test 1 data
+% d2: test 2 data
+% dd: difference 
+d1 = [50 77 67 94 64 77 85 52 81 91 52 61 83 66 71];
+d2 = [55 79 82 90 64 83 80 55 79 91 61 77 83 70 75];
+
+% matlab function
+[h, p, ci, stats] = ttest(d1, d2);
+
+% print answer
+disp('MATLAB:');
+disp(['   h = ', num2str(h)]);
+disp(['   t = ', num2str(stats.tstat)]);
+disp(['  df = ', num2str(stats.df)]);
+disp(['  sd = ', num2str(stats.sd)]);
+
+
+%% Related Samples MANUAL
+% Data: Table 8-2 P181 (Same as above)
+
+% manual
+dd = d2 - d1;
+ddm = mean(dd);   % mean
+ddn = length(dd); % num of samples
+dddof = ddn - 1;  % deg of freedom
+
+% variance & std
+ddvar = sum((dd - ddm).^2)/(ddn-1);
+ddstd = sqrt(ddvar);  
+
+% standard error of mean
+ddstdm = sqrt(ddvar)/sqrt(ddn);
+
+% t value (tstat)
+ddt = ddm/ddstdm;  
+
+% critical value
+sl = 0.05; % significance level
+ddcv = tinv(1-sl/2, dddof);
+
+% test 
+ddh = (abs(ddt) > ddcv);
+
+disp('MANUAL:');
+disp(['   h = ', num2str(ddh)]);
+disp(['   t = ', num2str(ddt)]);
+disp(['  df = ', num2str(dddof)]);
+disp(['  sd = ', num2str(ddstd)]);
+
+
+%% Independent Samples MATLAB
+% Table 8-3 P190
+
+clc; clear;
+
+% data 
+% d1: fraternity 
+% d2: nonfraternity
+d1 = [6 3 2 4 5 6 7 5 4 5 4 8 6 7];
+d2 = [0 5 3 4 3 6 3 6 5 4 4 2];
+
+[h, p, ci, stats] = ttest2(d1, d2);
+
+% print answer
+disp('MATLAB:');
+disp(['   h = ', num2str(h)]);
+disp(['   t = ', num2str(stats.tstat)]);
+disp(['  df = ', num2str(stats.df)]);
+disp(['  sd = ', num2str(stats.sd)]);
+
+
+%% Independent Samples MANUAL
+% Table 8-3 P190 (Same as above)
+
+d1m = mean(d1);    % d1 mean
+d1n = length(d1);  % d1 num of samples
+d1var = var(d1);   % d1 variance
+d1dof = d1n - 1;   % d1 dof 
+
+d2m = mean(d2);    % d2 mean
+d2n = length(d2);  % d2 num of samples
+d2var = var(d2);   % d2 variance 
+d2dof = d2n - 1;   % d2 dof
+
+dof = d1n + d2n - 2;  % totoal dof
+
+% standard error of mean 
+dstd = sqrt((d1var*d1dof+d2var*d2dof)/dof);
+dstdm = dstd * sqrt(1/d1n+1/d2n);
+
+% t value
+dt = (d1m - d2m) / dstdm;
+
+% critial value
+sl = 0.05;
+dcv = tinv(1-sl/2, dof);
+
+% test 
+dh = (abs(dt) > dcv);
+
+% print answer
+disp('MANUAL:');
+disp(['   h = ', num2str(dh)]);
+disp(['   t = ', num2str(dt)]);
+disp(['  df = ', num2str(dof)]);
+disp(['  sd = ', num2str(dstd)]);
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
