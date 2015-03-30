@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Chapter 12: Correlation and Regression</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-27"><meta name="DC.source" content="ch12.m"><style type="text/css">
+      --><title>Chapter 12: Correlation and Regression</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-30"><meta name="DC.source" content="ch12.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,26 +66,78 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Chapter 12: Correlation and Regression</h1><!--introduction--><pre>* Reference: Statistics Unplugged 3rd Edition
+  </style></head><body><div class="content"><h1>Chapter 12: Correlation and Regression</h1><!--introduction--><pre>* Reference:
+  * Statistics Unplugged 3rd Edition
+  * Matlab: http://tinyurl.com/l8htqna
 * Zihan Chen
-* 2015-03-28</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Regression MATLAB</a></li><li><a href="#2">Regression MANUAL</a></li></ul></div><h2>Regression MATLAB<a name="1"></a></h2><p>H0: mu = 193.80</p><h2>Regression MANUAL<a name="2"></a></h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+* 2015-03-28</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Correlation Analysis MATLAB</a></li></ul></div><h2>Correlation Analysis MATLAB<a name="1"></a></h2><p>NOTE: a,b values are different from the book, because the book is using 3 digits decimal.</p><pre class="codeinput">clc; clear;
+
+x = [1378 956 1222 830 991 1300 1521 899 1254 1149];
+y = [3.55 2.65 3.54 2.24 3.00 3.77 4.00 2.62 3.07 2.94];
+
+<span class="comment">% correlation coefficient</span>
+rmat = corrcoef(x,y);
+r_xy = rmat(1,2);
+
+
+<span class="comment">% fit</span>
+ft = polyfit(x,y,1);
+b = ft(1);
+a = ft(2);
+
+yfit = polyval(ft, x);
+ssresid = sum((yfit - y).^2);
+
+dof = length(x) - 2;
+sse = sqrt(ssresid/dof);
+
+<span class="comment">% print</span>
+disp([<span class="string">'cor coef = '</span>, num2str(r_xy)]);
+disp([<span class="string">'y = '</span>, num2str(b), <span class="string">'x + '</span>, num2str(a)]);
+disp([<span class="string">'sse = '</span>, num2str(sse)]);
+</pre><pre class="codeoutput">cor coef = 0.93348
+y = 0.0023324x + 0.45577
+sse = 0.21404
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Chapter 12: Correlation and Regression
 % 
-%  * Reference: Statistics Unplugged 3rd Edition
+%  * Reference: 
+%    * Statistics Unplugged 3rd Edition
+%    * Matlab: http://tinyurl.com/l8htqna
 %  * Zihan Chen
 %  * 2015-03-28
 
 
-%% Regression MATLAB
-% H0: mu = 193.80
+%% Correlation Analysis MATLAB
+% NOTE: a,b values are different from the book, because the book 
+% is using 3 digits decimal.
+
+clc; clear;
+
+x = [1378 956 1222 830 991 1300 1521 899 1254 1149];
+y = [3.55 2.65 3.54 2.24 3.00 3.77 4.00 2.62 3.07 2.94];
+
+% correlation coefficient 
+rmat = corrcoef(x,y);
+r_xy = rmat(1,2);
 
 
-%% Regression MANUAL
+% fit 
+ft = polyfit(x,y,1);
+b = ft(1); 
+a = ft(2); 
 
+yfit = polyval(ft, x);
+ssresid = sum((yfit - y).^2);
 
+dof = length(x) - 2;
+sse = sqrt(ssresid/dof);
 
-
+% print 
+disp(['cor coef = ', num2str(r_xy)]);
+disp(['y = ', num2str(b), 'x + ', num2str(a)]);
+disp(['sse = ', num2str(sse)]);
 
 
 
