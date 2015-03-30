@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Chapter 11: The Chi-Square Test</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-27"><meta name="DC.source" content="ch11.m"><style type="text/css">
+      --><title>Chapter 11: The Chi-Square Test</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-29"><meta name="DC.source" content="ch11.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,35 +66,150 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>Chapter 11: The Chi-Square Test</h1><!--introduction--><pre>* Reference: Statistics Unplugged 3rd Edition
+  </style></head><body><div class="content"><h1>Chapter 11: The Chi-Square Test</h1><!--introduction--><pre>Test of Independence</pre><pre>* Reference:
+   * Statistics Unplugged 3rd Edition
+   * http://tinyurl.com/ndnpelv
 * Zihan Chen
-* 2015-03-28</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Chi-Square MATLAB</a></li><li><a href="#2">Chi-Square Manual</a></li></ul></div><h2>Chi-Square MATLAB<a name="1"></a></h2><pre class="codeinput">clc; clear;
-</pre><h2>Chi-Square Manual<a name="2"></a></h2><pre class="codeinput">clc;
+* 2015-03-28</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Chi-Square MANUAL</a></li><li><a href="#2">Chi-Square MATLAB</a></li></ul></div><h2>Chi-Square MANUAL<a name="1"></a></h2><p>Observed Frequencies:</p><p>
+<table border=1>
+<tr><td></td><td>Urban</td><td>Suburban</td><td>Rural</td></tr>
+<tr><td>Yes</td><td>8</td><td>17</td><td>7</td></tr>
+<tr><td>No</td><td>6</td><td>8</td><td>15</td></tr>
+<tr><td>Undecided</td><td>19</td><td>7</td><td>11</td></tr>
+</table>
+</p><pre class="codeinput">clc; clear;
+
+<span class="comment">% col: urban suburban rural</span>
+<span class="comment">% rol: yes no undecided</span>
+d = [8 17 7; 6 8 15; 19 7 11];
+
+<span class="comment">% compute expected value</span>
+sumc = sum(d);
+sumr = sum(d,2);
+sumall = sum(sum(d));
+de = sumr * sumc / sumall;
+
+<span class="comment">% chi2 value</span>
+chi2 = sum(sum((d - de).^2./de));
+
+<span class="comment">% dof</span>
+sz = size(d);
+dof = (sz(1)-1) * (sz(2)-1);
+
+<span class="comment">% chi2</span>
+sl = 0.05;  <span class="comment">% significance level</span>
+chi2cv = chi2inv(1-sl, dof);
+
+<span class="comment">% test</span>
+h = (chi2&gt;chi2cv);
+p = 1 - chi2cdf(chi2, dof);
+
+<span class="comment">% print</span>
+disp([<span class="string">'chi2 = '</span>, num2str(chi2)]);
+disp([<span class="string">'p = '</span>, num2str(p)]);
+disp([<span class="string">'h = '</span>, num2str(h), <span class="string">', reject null hypothesis'</span>]);
+</pre><pre class="codeoutput">chi2 = 16.3729
+p = 0.0025575
+h = 1, reject null hypothesis
+</pre><h2>Chi-Square MATLAB<a name="2"></a></h2><pre class="codeinput">clc;
+
+<span class="comment">% Construct Raw Data</span>
+y = [repmat(<span class="string">'u'</span>, sumc(1), 1); repmat(<span class="string">'s'</span>, sumc(2), 1); repmat(<span class="string">'r'</span>, sumc(3), 1)];
+x = [repmat(<span class="string">'y'</span>, d(1,1), 1); repmat(<span class="string">'n'</span>, d(2,1), 1); repmat(<span class="string">'u'</span>, d(3,1), 1); <span class="keyword">...</span>
+  repmat(<span class="string">'y'</span>, d(1,2), 1); repmat(<span class="string">'n'</span>, d(2,2), 1); repmat(<span class="string">'u'</span>, d(3,2), 1); <span class="keyword">...</span>
+  repmat(<span class="string">'y'</span>, d(1,3), 1); repmat(<span class="string">'n'</span>, d(2,3), 1); repmat(<span class="string">'u'</span>, d(3,3), 1);];
+
+<span class="comment">% Matlab</span>
+[tbl, chi2m, pm] = crosstab(x,y);
+
+<span class="comment">% test</span>
+hm = (pm &lt; sl);
+
+<span class="comment">% print</span>
+disp([<span class="string">'chi2 = '</span>, num2str(chi2m)]);
+disp([<span class="string">'p = '</span>, num2str(pm)]);
+disp([<span class="string">'h = '</span>, num2str(hm), <span class="string">', reject null hypothesis'</span>]);
+</pre><pre class="codeoutput">chi2 = 16.3729
+p = 0.0025575
+h = 1, reject null hypothesis
 </pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Chapter 11: The Chi-Square Test
-% 
-%  * Reference: Statistics Unplugged 3rd Edition
+%  Test of Independence 
+%
+%  * Reference: 
+%     * Statistics Unplugged 3rd Edition
+%     * http://tinyurl.com/ndnpelv
 %  * Zihan Chen
 %  * 2015-03-28
 
 
-%% Chi-Square MATLAB
+%% Chi-Square MANUAL
+% Observed Frequencies:
+%
+% <html>
+% <table border=1>
+% <tr><td></td><td>Urban</td><td>Suburban</td><td>Rural</td></tr>
+% <tr><td>Yes</td><td>8</td><td>17</td><td>7</td></tr>
+% <tr><td>No</td><td>6</td><td>8</td><td>15</td></tr>
+% <tr><td>Undecided</td><td>19</td><td>7</td><td>11</td></tr>
+% </table>
+% </html>
+
 
 clc; clear;
 
+% col: urban suburban rural
+% rol: yes no undecided
+d = [8 17 7; 6 8 15; 19 7 11];
+
+% compute expected value
+sumc = sum(d);
+sumr = sum(d,2);
+sumall = sum(sum(d)); 
+de = sumr * sumc / sumall;
+
+% chi2 value
+chi2 = sum(sum((d - de).^2./de));
+
+% dof
+sz = size(d);
+dof = (sz(1)-1) * (sz(2)-1);
+
+% chi2
+sl = 0.05;  % significance level
+chi2cv = chi2inv(1-sl, dof);
+
+% test 
+h = (chi2>chi2cv);
+p = 1 - chi2cdf(chi2, dof);
+
+% print 
+disp(['chi2 = ', num2str(chi2)]);
+disp(['p = ', num2str(p)]);
+disp(['h = ', num2str(h), ', reject null hypothesis']);
 
 
-%% Chi-Square Manual
+%% Chi-Square MATLAB
 
-clc;
+clc; 
 
+% Construct Raw Data 
+y = [repmat('u', sumc(1), 1); repmat('s', sumc(2), 1); repmat('r', sumc(3), 1)];
+x = [repmat('y', d(1,1), 1); repmat('n', d(2,1), 1); repmat('u', d(3,1), 1); ...
+  repmat('y', d(1,2), 1); repmat('n', d(2,2), 1); repmat('u', d(3,2), 1); ...
+  repmat('y', d(1,3), 1); repmat('n', d(2,3), 1); repmat('u', d(3,3), 1);];
 
+% Matlab 
+[tbl, chi2m, pm] = crosstab(x,y);
 
+% test 
+hm = (pm < sl);
 
-
-
-
+% print 
+disp(['chi2 = ', num2str(chi2m)]);
+disp(['p = ', num2str(pm)]);
+disp(['h = ', num2str(hm), ', reject null hypothesis']);
 
 ##### SOURCE END #####
 --></body></html>
