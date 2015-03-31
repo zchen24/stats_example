@@ -6,7 +6,7 @@
 % $F = S_1^2/S_2^2$
 %
 
-clc; clear;
+clc; clear; close all;
 
 % load data 
 load examgrades;
@@ -44,3 +44,19 @@ disp('F-Test MANUAL:');
 disp(['   h = ', num2str(hm)]);
 disp(['   F = ', num2str(fm)]);
 disp(['   p = ', num2str(pm)]);
+
+%% Plot of F Distribution
+% * numerator dof = 3
+% * denominator dof = 5
+
+ndof = 3; 
+ddof = 5;
+x = 0:0.01:10;
+y = fpdf(x, ndof, ddof);
+
+figure;
+plot(x,y);
+title('F(3,5) Distribution');
+xlabel('F Value');
+ylabel('Probability');
+
