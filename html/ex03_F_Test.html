@@ -67,7 +67,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>Others: Two-Sample F Test (One Sided)</h1><!--introduction--><pre>* Zihan Chen
-* 2015-03-29</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">F-test MATLAB</a></li><li><a href="#2">F-test MANUAL</a></li></ul></div><h2>F-test MATLAB<a name="1"></a></h2><p><img src="ex03_F_Test_eq41233.png" alt="$F = S_1^2/S_2^2$"></p><pre class="codeinput">clc; clear;
+* 2015-03-29</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">F-test MATLAB</a></li><li><a href="#2">F-test MANUAL</a></li><li><a href="#3">Plot of F Distribution</a></li></ul></div><h2>F-test MATLAB<a name="1"></a></h2><p><img src="ex03_F_Test_eq41233.png" alt="$F = S_1^2/S_2^2$"></p><pre class="codeinput">clc; clear; close <span class="string">all</span>;
 
 <span class="comment">% load data</span>
 load <span class="string">examgrades</span>;
@@ -110,7 +110,17 @@ disp([<span class="string">'   p = '</span>, num2str(pm)]);
    h = 1
    F = 1.7768
    p = 0.00094364
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
+</pre><h2>Plot of F Distribution<a name="3"></a></h2><div><ul><li>numerator dof = 3</li><li>denominator dof = 5</li></ul></div><pre class="codeinput">ndof = 3;
+ddof = 5;
+x = 0:0.01:10;
+y = fpdf(x, ndof, ddof);
+
+figure;
+plot(x,y);
+title(<span class="string">'F(3,5) Distribution'</span>);
+xlabel(<span class="string">'F Value'</span>);
+ylabel(<span class="string">'Probability'</span>);
+</pre><img vspace="5" hspace="5" src="ex03_F_Test_01.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Others: Two-Sample F Test (One Sided)
 %  * Zihan Chen
@@ -120,7 +130,7 @@ disp([<span class="string">'   p = '</span>, num2str(pm)]);
 % $F = S_1^2/S_2^2$
 %
 
-clc; clear;
+clc; clear; close all;
 
 % load data 
 load examgrades;
@@ -158,6 +168,22 @@ disp('F-Test MANUAL:');
 disp(['   h = ', num2str(hm)]);
 disp(['   F = ', num2str(fm)]);
 disp(['   p = ', num2str(pm)]);
+
+%% Plot of F Distribution
+% * numerator dof = 3
+% * denominator dof = 5
+
+ndof = 3; 
+ddof = 5;
+x = 0:0.01:10;
+y = fpdf(x, ndof, ddof);
+
+figure;
+plot(x,y);
+title('F(3,5) Distribution');
+xlabel('F Value');
+ylabel('Probability');
+
 
 ##### SOURCE END #####
 --></body></html>

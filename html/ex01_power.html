@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Others: Power Analysis</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-30"><meta name="DC.source" content="ex01_power.m"><style type="text/css">
+      --><title>Others: Power Analysis</title><meta name="generator" content="MATLAB 8.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-03-30"><meta name="DC.source" content="ex01_power.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -67,8 +67,51 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>Others: Power Analysis</h1><!--introduction--><div><ul><li>Power Analysis I: <a href="https://youtu.be/GOqRaQ5d2VI">Basic Concept</a></li><li>Power Analysis II: <a href="https://youtu.be/fRm2dEWSJrk">Example</a></li><li>MATLAB: <a href="http://www.mathworks.com/help/stats/sampsizepwr.html">sampsizepwr</a></li></ul></div><pre>* Zihan Chen
-* 2015-03-29</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Power</a></li><li><a href="#2">Power Analysis</a></li></ul></div><h2>Power<a name="1"></a></h2><div><ul><li>Type-II Error: beta</li><li>power: 1 - beta</li></ul></div><pre class="codeinput">clc; clear;
-</pre><h2>Power Analysis<a name="2"></a></h2><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+* 2015-03-29</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Power Analysis (T-Test) MATLAB</a></li><li><a href="#2">Power Analysis (T-Test) MATLAB</a></li></ul></div><h2>Power Analysis (T-Test) MATLAB<a name="1"></a></h2><div><ul><li>Based on MATLAB doc:   * <a href="http://www.mathworks.com/help/stats/sampsizepwr.html">http://www.mathworks.com/help/stats/sampsizepwr.html</a></li></ul></div><pre class="codeinput">clc; clear; close <span class="string">all</span>;
+
+<span class="comment">% data</span>
+mu = 100;   <span class="comment">% H0 mu = 100 ml</span>
+sigma = 5;    <span class="comment">% H0 std = 5 ml</span>
+muHa = 102;  <span class="comment">% Ha mu = 102 ml</span>
+
+<span class="comment">% Required Sample Size</span>
+p0 = [mu sigma];
+p1 = muHa;
+nout = sampsizepwr(<span class="string">'t'</span>, p0, p1, 0.80);
+
+<span class="comment">% Power v.s. Sample Size</span>
+nn = 1:100;
+pwrout = sampsizepwr(<span class="string">'t'</span>,p0, p1, [], nn);
+
+disp([<span class="string">'nout = '</span>, num2str(nout)]);
+figure;
+plot(nn,pwrout,<span class="string">'b-'</span>,nout,0.8,<span class="string">'ro'</span>)
+title(<span class="string">'Power versus Sample Size'</span>)
+xlabel(<span class="string">'Sample Size'</span>)
+ylabel(<span class="string">'Power'</span>)
+</pre><pre class="codeoutput">nout = 52
+</pre><img vspace="5" hspace="5" src="ex01_power_01.png" alt=""> <h2>Power Analysis (T-Test) MATLAB<a name="2"></a></h2><p>Based on Power Analysis Example https://youtu.be/fRm2dEWSJrk</p><pre class="codeinput">clc;
+alpha = 0.05;
+power = zeros(1,100);
+<span class="keyword">for</span> dof = 1:100;
+    tc = tinv(1-alpha/2, dof);  <span class="comment">% t critical</span>
+    xc = tc * (sigma/sqrt(dof+1)) + mu;
+
+    beta = tcdf((xc - muHa) / (sigma/sqrt(dof+1)), dof);
+    power(dof) = 1 - beta;
+<span class="keyword">end</span>
+
+<span class="comment">% nout</span>
+noutm = find(power&gt;0.8,1);
+disp([<span class="string">'nout = '</span>, num2str(nout)]);
+
+<span class="comment">% plot</span>
+dof = 1:100;
+figure; plot(dof, power, noutm,0.8,<span class="string">'go'</span>);
+xlabel(<span class="string">'Sample Size'</span>); ylabel(<span class="string">'Power'</span>);
+title(<span class="string">'Effect of sample size on Power'</span>, <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>);
+</pre><pre class="codeoutput">nout = 52
+</pre><img vspace="5" hspace="5" src="ex01_power_02.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% Others: Power Analysis
 %
@@ -79,16 +122,60 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 %  * Zihan Chen
 %  * 2015-03-29
 
-%% Power
-% * Type-II Error: beta
-% * power: 1 - beta
+%% Power Analysis (T-Test) MATLAB
+% * Based on MATLAB doc: 
+%   * http://www.mathworks.com/help/stats/sampsizepwr.html
 
-clc; clear;
+clc; clear; close all;
+
+% data 
+mu = 100;   % H0 mu = 100 ml
+sigma = 5;    % H0 std = 5 ml
+muHa = 102;  % Ha mu = 102 ml
+
+% Required Sample Size
+p0 = [mu sigma];
+p1 = muHa;
+nout = sampsizepwr('t', p0, p1, 0.80);
+
+% Power v.s. Sample Size
+nn = 1:100;
+pwrout = sampsizepwr('t',p0, p1, [], nn);
+
+disp(['nout = ', num2str(nout)]);
+figure;
+plot(nn,pwrout,'b-',nout,0.8,'ro')
+title('Power versus Sample Size')
+xlabel('Sample Size')
+ylabel('Power')
 
 
+%% Power Analysis (T-Test) MATLAB
+% Based on Power Analysis Example
+% https://youtu.be/fRm2dEWSJrk
+
+clc; 
+alpha = 0.05;
+power = zeros(1,100);
+for dof = 1:100;
+    tc = tinv(1-alpha/2, dof);  % t critical
+    xc = tc * (sigma/sqrt(dof+1)) + mu;
+    
+    beta = tcdf((xc - muHa) / (sigma/sqrt(dof+1)), dof);
+    power(dof) = 1 - beta;
+end
+
+% nout 
+noutm = find(power>0.8,1);
+disp(['nout = ', num2str(nout)]);
+
+% plot
+dof = 1:100;
+figure; plot(dof, power, noutm,0.8,'go');
+xlabel('Sample Size'); ylabel('Power');
+title('Effect of sample size on Power', 'FontWeight', 'bold');
 
 
-%% Power Analysis 
 
 
 
